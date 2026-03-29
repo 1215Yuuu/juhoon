@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUHOON — CORTIS</title>
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+body{background:#fafaf8;color:#1c1c1c;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;line-height:1.6;min-height:100vh;}
+img{display:block;max-width:100%;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;font-family:inherit;}
+input,textarea{font-family:inherit;}
+
+/* ── PAGES ── */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:300;
+  background:#fafaf8;
+  border-bottom:1px solid #e0dfd8;
+  padding:0 5vw;height:54px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{font-size:13px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#1c1c1c;}
+.ham{display:flex;flex-direction:column;gap:5px;padding:8px;background:transparent;border:none;}
+.ham span{display:block;width:22px;height:2px;background:#1c1c1c;transition:all .28s;}
+.ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.ham.open span:nth-child(2){opacity:0;}
+.ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* ── DRAWER ── */
+.drawer{
+  position:fixed;top:54px;right:0;bottom:0;width:240px;
+  background:#fff;border-left:1px solid #e0dfd8;
+  transform:translateX(100%);transition:transform .28s ease;
+  z-index:290;display:flex;flex-direction:column;overflow-y:auto;
+}
+.drawer.open{transform:translateX(0);}
+.dlinks{display:flex;flex-direction:column;}
+.dlinks button{
+  padding:15px 28px;font-size:12px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:#444;background:transparent;border:none;
+  border-bottom:1px solid #f0efe9;text-align:left;transition:background .15s;
+}
+.dlinks button:hover{background:#f5f4f0;color:#1c1c1c;}
+.dadmin{padding:20px 28px;margin-top:auto;border-top:1px solid #e0dfd8;}
+.dadmin-status{font-size:11px;color:#aaa;margin-bottom:8px;}
+.dbtn{width:100%;padding:10px;background:#1c1c1c;color:#fff;border:none;font-size:11px;letter-spacing:.15em;text-transform:uppercase;transition:opacity .2s;}
+.dbtn:hover{opacity:.8;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:280;}
+.overlay.open{display:block;}
+
+/* ── HOME PAGE ── */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 54px);background:#fff;border-bottom:1px solid #e0dfd8;overflow:hidden;}
+.hero-l{display:flex;flex-direction:column;justify-content:flex-end;padding:8vh 6vw 10vh;border-right:1px solid #e0dfd8;}
+.hero-tag{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:#aaa;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.hero-tag::before{content:'';width:22px;height:1px;background:#aaa;}
+.hero-name{font-size:clamp(58px,8vw,110px);font-weight:800;line-height:.9;letter-spacing:-.02em;color:#1c1c1c;margin-bottom:6px;}
+.hero-kr{font-size:clamp(13px,1.4vw,17px);color:#999;margin-bottom:36px;letter-spacing:.1em;}
+.hero-desc{font-size:clamp(14px,1.3vw,17px);color:#555;line-height:1.85;max-width:340px;font-style:italic;}
+.hero-r{position:relative;overflow:hidden;background:#eceae3;}
+.hero-r img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .7s;}
+.hero-r:hover img{transform:scale(1.03);}
+.hero-badge{position:absolute;bottom:20px;right:20px;background:#fff;padding:5px 14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#aaa;border:1px solid #e0dfd8;}
+
+/* ── SECTION ── */
+.sec{padding:64px 5vw;border-bottom:1px solid #e0dfd8;background:#fafaf8;}
+.sec.w{background:#fff;}
+.sec-head{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:#aaa;margin-bottom:38px;display:flex;align-items:center;gap:14px;}
+.sec-head::after{content:'';width:50px;height:1px;background:#e0dfd8;}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;background:#e0dfd8;border:1px solid #e0dfd8;}
+.stat{background:#fff;padding:22px 18px;transition:background .2s;}
+.stat:hover{background:#f5f4f0;}
+.stat-l{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#aaa;margin-bottom:7px;}
+.stat-v{font-size:19px;font-weight:800;letter-spacing:-.01em;color:#1c1c1c;margin-bottom:3px;}
+.stat-s{font-size:11px;color:#999;}
+
+/* ── FACTS ── */
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:0 52px;}
+.fact{padding:0 0 32px 18px;border-left:2px solid #e0dfd8;transition:border-color .25s;}
+.fact:hover{border-color:#1c1c1c;}
+.fact-t{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:#aaa;margin-bottom:8px;}
+.fact-b{font-size:14px;line-height:1.85;color:#444;}
+
+/* ── SKILLS ── */
+.skills{display:flex;flex-wrap:wrap;gap:8px;}
+.skill{padding:6px 16px;background:#f0efe9;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#555;transition:all .2s;border:1px solid transparent;}
+.skill:hover{background:#1c1c1c;color:#fff;}
+
+/* ── SONGS ── */
+.song{display:flex;align-items:center;gap:20px;padding:17px 0;border-bottom:1px solid #f0efe9;transition:padding-left .2s;}
+.song:hover{padding-left:10px;}
+.song-n{font-size:11px;font-weight:700;color:#ccc;min-width:22px;}
+.song-name{flex:1;font-size:16px;font-weight:500;color:#1c1c1c;}
+.song-r{font-size:11px;color:#aaa;}
+
+/* ── QUOTE ── */
+.quote-sec{padding:72px 5vw;background:#f5f4f0;text-align:center;border-bottom:1px solid #e0dfd8;}
+.quote-t{font-size:clamp(18px,2.5vw,28px);font-style:italic;line-height:1.75;max-width:580px;margin:0 auto 18px;font-weight:300;color:#1c1c1c;}
+.quote-by{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#aaa;}
+
+/* ── PAGE HEADER ── */
+.pg-header{padding:40px 5vw 0;background:#fafaf8;}
+.pg-home{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#aaa;background:transparent;border:1px solid #e0dfd8;padding:7px 16px;margin-bottom:32px;transition:all .2s;}
+.pg-home:hover{color:#1c1c1c;border-color:#1c1c1c;}
+.pg-title{font-size:28px;font-weight:800;letter-spacing:-.02em;color:#1c1c1c;margin-bottom:6px;padding:0 5vw 28px;}
+.pg-divider{height:1px;background:#e0dfd8;margin:0;}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;flex-wrap:wrap;border-bottom:1px solid #e0dfd8;background:#fff;padding:0 5vw;}
+.tab{font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:14px 16px;background:transparent;border:none;color:#aaa;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;}
+.tab:hover,.tab.on{color:#1c1c1c;border-bottom-color:#1c1c1c;}
+.tab-content{padding:40px 5vw;}
+
+/* ── PHOTO GRID ── */
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
+.pc{position:relative;aspect-ratio:3/4;overflow:hidden;background:#eceae3;cursor:zoom-in;border:1px solid #e0dfd8;}
+.pc img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s;}
+.pc:hover img{transform:scale(1.06);}
+.pc-cap{position:absolute;bottom:0;left:0;right:0;padding:28px 11px 11px;background:linear-gradient(transparent,rgba(0,0,0,.55));pointer-events:none;}
+.pc-date{font-size:9px;letter-spacing:.14em;color:rgba(255,255,255,.65);margin-bottom:3px;}
+.pc-title{font-size:10px;color:rgba(255,255,255,.9);line-height:1.4;}
+.pc-badge{position:absolute;top:9px;right:9px;background:rgba(255,255,255,.92);padding:3px 8px;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#1c1c1c;opacity:0;transition:opacity .2s;pointer-events:none;}
+.pc:hover .pc-badge{opacity:1;}
+
+/* ── LIGHTBOX ── */
+#lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;align-items:center;justify-content:center;}
+#lb.open{display:flex;}
+.lb-in{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:86vw;}
+#lb-img{max-height:70vh;max-width:100%;object-fit:contain;}
+#lb-cap{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);text-align:center;}
+.lb-row{display:flex;gap:10px;align-items:center;}
+.lb-btn,.lb-x{font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:8px 18px;border:1px solid rgba(255,255,255,.25);background:transparent;color:rgba(255,255,255,.75);transition:all .2s;}
+.lb-btn:hover,.lb-x:hover{background:rgba(255,255,255,.1);border-color:#fff;color:#fff;}
+.lb-x{position:fixed;top:20px;right:24px;}
+.lb-cnt{font-size:11px;color:rgba(255,255,255,.35);}
+
+/* ── VIDEO GRID ── */
+.vid-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:14px;}
+.vc{background:#fff;border:1px solid #e0dfd8;overflow:hidden;display:block;transition:all .2s;cursor:pointer;}
+.vc:hover{border-color:#1c1c1c;box-shadow:0 2px 12px rgba(0,0,0,.07);}
+.vc.dim{opacity:.4;pointer-events:none;}
+.vt{position:relative;aspect-ratio:16/9;background:#eceae3;overflow:hidden;}
+.vt img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.vc:hover .vt img{transform:scale(1.04);}
+.vplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+.vplay-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;transition:transform .2s;}
+.vc:hover .vplay-btn{transform:scale(1.1);}
+.vtri{width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:14px solid #1c1c1c;margin-left:3px;}
+.vi{padding:12px 14px 14px;}
+.vi-meta{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#aaa;margin-bottom:5px;}
+.vi-name{font-size:12px;font-weight:600;color:#1c1c1c;line-height:1.4;margin-bottom:4px;}
+.vi-note{font-size:11px;color:#aaa;line-height:1.5;}
+.vli{display:flex;align-items:flex-start;gap:16px;padding:16px 0;border-bottom:1px solid #f0efe9;transition:padding-left .2s;}
+.vli:hover{padding-left:8px;}
+.vli-n{font-size:11px;font-weight:700;color:#ccc;min-width:22px;margin-top:2px;}
+.vli-b{flex:1;}
+.vli-title{font-size:15px;font-weight:500;color:#1c1c1c;margin-bottom:4px;}
+.vli-m{font-size:11px;color:#aaa;}
+.vli-note{font-size:12px;color:#666;margin-top:4px;line-height:1.6;}
+.watch{flex-shrink:0;padding:6px 14px;border:1px solid #e0dfd8;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;background:transparent;margin-top:2px;white-space:nowrap;transition:all .2s;display:inline-block;}
+.watch:hover{border-color:#1c1c1c;color:#1c1c1c;}
+
+/* ── ADMIN / EDIT BUTTON ── */
+.edit-btn{padding:7px 14px;border:1px solid #e0dfd8;background:transparent;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;transition:all .2s;}
+.edit-btn:hover{border-color:#1c1c1c;color:#1c1c1c;}
+.edit-btn.hidden{display:none;}
+.sec-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:38px;}
+.sec-row .sec-head{margin-bottom:0;}
+
+/* ── MODAL BASE ── */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:8000;align-items:center;justify-content:center;padding:20px;}
+.modal.open{display:flex;}
+.mbox{background:#fff;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;border:1px solid #e0dfd8;display:flex;flex-direction:column;}
+.mhead{padding:18px 22px;border-bottom:1px solid #e0dfd8;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;}
+.mhead h3{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.mbody{padding:22px;display:flex;flex-direction:column;}
+.mclose{font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:7px 14px;border:1px solid #e0dfd8;background:transparent;color:#aaa;transition:all .2s;}
+.mclose:hover{border-color:#1c1c1c;color:#1c1c1c;}
+.msave{margin:0 22px 22px;padding:12px;background:#1c1c1c;color:#fff;border:none;font-size:11px;letter-spacing:.18em;text-transform:uppercase;transition:opacity .2s;}
+.msave:hover{opacity:.8;}
+.madd{margin:0 22px 12px;padding:10px;border:1px dashed #e0dfd8;background:transparent;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;transition:all .2s;}
+.madd:hover{border-color:#1c1c1c;color:#1c1c1c;}
+
+/* ── EDIT ITEMS ── */
+.ei{border:1px solid #e0dfd8;padding:14px;background:#fafaf8;margin-bottom:12px;}
+.ei-label{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:#aaa;margin-bottom:10px;}
+.ei input{width:100%;border:1px solid #e0dfd8;padding:8px 10px;font-size:12px;color:#1c1c1c;background:#fff;outline:none;margin-bottom:6px;transition:border-color .2s;}
+.ei input:last-of-type{margin-bottom:8px;}
+.ei input:focus{border-color:#1c1c1c;}
+.ei input::placeholder{color:#ccc;}
+.ei-del{padding:4px 11px;border:1px solid #e0dfd8;background:transparent;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#ccc;transition:all .2s;}
+.ei-del:hover{border-color:#c00;color:#c00;}
+
+/* ── LOGIN ── */
+#login-modal .mbox{max-width:340px;}
+.login-err{font-size:12px;color:#c00;margin-bottom:10px;display:none;}
+.login-err.show{display:block;}
+.login-row{display:flex;gap:10px;}
+.btn-ok{flex:1;padding:11px;background:#1c1c1c;color:#fff;border:none;font-size:12px;letter-spacing:.14em;text-transform:uppercase;transition:opacity .2s;}
+.btn-ok:hover{opacity:.8;}
+.btn-cancel{padding:11px 16px;background:transparent;border:1px solid #e0dfd8;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;transition:all .2s;}
+.btn-cancel:hover{border-color:#1c1c1c;color:#1c1c1c;}
+
+/* ── FOOTER ── */
+footer{background:#1c1c1c;color:rgba(255,255,255,.4);padding:28px 5vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.ft-logo{font-size:14px;font-weight:800;letter-spacing:.14em;color:#fff;}
+.ft-mid,.ft-r{font-size:11px;}
+.ft-r{letter-spacing:.16em;text-transform:uppercase;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:660px){
+  .hero{grid-template-columns:1fr;}
+  .hero-r{display:none;}
+  .facts{grid-template-columns:1fr;}
+  .vid-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">JUHOON</span>
+  <button class="ham" id="ham" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- DRAWER OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="dlinks">
+    <button onclick="goPage('home')">Home</button>
+    <button onclick="goPage('gallery')">Gallery</button>
+    <button onclick="goPage('weverse')">Weverse</button>
+    <button onclick="goPage('videos')">Videos</button>
+  </div>
+  <div class="dadmin">
+    <div class="dadmin-status" id="admin-status"></div>
+    <button class="dbtn" id="admin-btn" onclick="handleAdmin()"></button>
+  </div>
+</div>
+
+<!-- ═══ HOME ═══ -->
+<div id="page-home" class="page active">
+
+  <section class="hero">
+    <div class="hero-l">
+      <div class="hero-tag">CORTIS · BIGHIT MUSIC</div>
+      <div class="hero-name">JU<br>HOON</div>
+      <div class="hero-kr">주훈 · 김주훈</div>
+      <div class="hero-desc">安靜的外表下，藏著<br>團裡最多產的創作者。</div>
+    </div>
+    <div class="hero-r">
+      <img src="https://picsum.photos/seed/juhero/700/940" alt="Juhoon">
+      <div class="hero-badge">CORTIS · 2025</div>
+    </div>
+  </section>
+
+  <section class="sec w">
+    <div class="sec-head">기본 정보 · 基本資料</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-l">生日</div><div class="stat-v">2008.01.03</div><div class="stat-s">摩羯座 ♑</div></div>
+      <div class="stat"><div class="stat-l">出生地</div><div class="stat-v">首爾</div><div class="stat-s">南韓 🇰🇷</div></div>
+      <div class="stat"><div class="stat-l">身高</div><div class="stat-v">175–176 cm</div><div class="stat-s">約 5'9"</div></div>
+      <div class="stat"><div class="stat-l">血型</div><div class="stat-v">O 型</div><div class="stat-s">MBTI：ISFP</div></div>
+      <div class="stat"><div class="stat-l">出道日</div><div class="stat-v">2025.08.18</div><div class="stat-s">What You Want</div></div>
+      <div class="stat"><div class="stat-l">暱稱</div><div class="stat-v">주주 / Huni</div><div class="stat-s">Poyoyoi</div></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head">관련 정보 · 關於 Juhoon</div>
+    <div class="facts">
+      <div class="fact"><div class="fact-t">童年模特</div><div class="fact-b">Juhoon 出道前曾是兒童模特，出現在 VIXX、Zion.T、MeloMance 等歌手的 MV 中，也曾代言 Samsung Galaxy Z Flip4 廣告（與 IVE 張元英合作）。</div></div>
+      <div class="fact"><div class="fact-t">足球夢</div><div class="fact-b">小學時加入足球隊，夢想成為職業球員，甚至在西班牙比賽中擔任英語翻譯。小學期間也是校內管弦樂團成員。</div></div>
+      <div class="fact"><div class="fact-t">語言能力</div><div class="fact-b">精通韓語和英語，略懂西班牙語。曾就讀 Young Hoon 國際中學，並通過高中同等學力考試。</div></div>
+      <div class="fact"><div class="fact-t">音樂創作</div><div class="fact-b">參與了 CORTIS 首張 EP《COLOR OUTSIDE THE LINES》全部五首歌的共同創作，包含《GO!》《What You Want》《FaSHioN》《JoyRide》，也參與了《GO!》的編舞。</div></div>
+      <div class="fact"><div class="fact-t">日常生活</div><div class="fact-b">公認是團裡最 chill 的成員，習慣每天詢問成員想吃什麼。Martin 說他是吃最多的人，睡前習慣聽 Yoga Nidra 冥想音頻。</div></div>
+      <div class="fact"><div class="fact-t">喜好</div><div class="fact-b">家裡有烏龜 Choco。最愛電影《鐵達尼號》，最愛食物是拉麵。試鏡歌曲是 BTS V 的《Slow Dancing》，獨生子。</div></div>
+    </div>
+  </section>
+
+  <section class="sec w">
+    <div class="sec-head">재능 · 才能</div>
+    <div class="skills">
+      <span class="skill">鋼琴</span><span class="skill">長笛</span><span class="skill">吉他</span>
+      <span class="skill">鼓</span><span class="skill">作詞</span><span class="skill">作曲</span>
+      <span class="skill">編舞</span><span class="skill">韓語</span><span class="skill">英語</span>
+      <span class="skill">西班牙語</span><span class="skill">足球</span><span class="skill">籃球</span>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head">디스코그래피 · 參與歌曲</div>
+    <div class="song"><div class="song-n">01</div><div class="song-name">GO!</div><div class="song-r">共同創作 · 共同編舞</div></div>
+    <div class="song"><div class="song-n">02</div><div class="song-name">What You Want</div><div class="song-r">共同創作</div></div>
+    <div class="song"><div class="song-n">03</div><div class="song-name">FaSHioN</div><div class="song-r">共同創作</div></div>
+    <div class="song"><div class="song-n">04</div><div class="song-name">JoyRide</div><div class="song-r">共同創作</div></div>
+    <div class="song"><div class="song-n">05</div><div class="song-name">Color Outside the Lines (EP)</div><div class="song-r">全碟共同創作</div></div>
+  </section>
+
+  <div class="quote-sec">
+    <div class="quote-t">「他的目標是讓全世界認識 CORTIS，<br>讓大家真正了解他們是誰。」</div>
+    <div class="quote-by">— Juhoon 的願望</div>
+  </div>
+
+  <footer>
+    <div class="ft-logo">JUHOON × CORTIS</div>
+    <div class="ft-mid">最後更新：2026年3月</div>
+    <div class="ft-r">COER</div>
+  </footer>
+</div>
+
+<!-- ═══ GALLERY ═══ -->
+<div id="page-gallery" class="page">
+  <div class="pg-header">
+    <button class="pg-home" onclick="goPage('home')">← Home</button>
+  </div>
+  <div class="pg-title">Instagram · @cortis</div>
+  <div class="pg-divider"></div>
+  <div style="padding:24px 5vw 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div class="tabs" id="ig-tabs" style="border:none;padding:0;background:transparent;">
+      <button class="tab on" onclick="phFilter('all',this)">All</button>
+      <button class="tab" onclick="phFilter('2025.08',this)">2025.08</button>
+      <button class="tab" onclick="phFilter('2025.09',this)">2025.09</button>
+      <button class="tab" onclick="phFilter('2025.10',this)">2025.10</button>
+      <button class="tab" onclick="phFilter('2025.12',this)">2025.12</button>
+      <button class="tab" onclick="phFilter('2026',this)">2026</button>
+    </div>
+    <button class="edit-btn hidden" id="ig-edit-btn" onclick="openModal('modal-ig')">✏ 編輯</button>
+  </div>
+  <div style="padding:20px 5vw 60px;">
+    <div class="photo-grid" id="ph-grid"></div>
+  </div>
+  <footer><div class="ft-logo">JUHOON × CORTIS</div><div class="ft-r">COER</div></footer>
+</div>
+
+<!-- ═══ WEVERSE ═══ -->
+<div id="page-weverse" class="page">
+  <div class="pg-header">
+    <button class="pg-home" onclick="goPage('home')">← Home</button>
+  </div>
+  <div class="pg-title">Weverse · 주훈</div>
+  <div class="pg-divider"></div>
+  <div style="padding:24px 5vw 0;display:flex;justify-content:flex-end;">
+    <button class="edit-btn hidden" id="wvs-edit-btn" onclick="openModal('modal-wvs')">✏ 編輯</button>
+  </div>
+  <div style="padding:20px 5vw 60px;">
+    <div class="photo-grid" id="wvs-grid"></div>
+  </div>
+  <footer><div class="ft-logo">JUHOON × CORTIS</div><div class="ft-r">COER</div></footer>
+</div>
+
+<!-- ═══ VIDEOS ═══ -->
+<div id="page-videos" class="page">
+  <div class="pg-header">
+    <button class="pg-home" onclick="goPage('home')">← Home</button>
+  </div>
+  <div class="pg-title">影片 · Videos</div>
+  <div class="pg-divider"></div>
+  <div class="tabs" id="vid-tabs">
+    <button class="tab on" onclick="vidTab('fancam',this)">직캠 Fancam</button>
+    <button class="tab" onclick="vidTab('official',this)">CORTIS 官方頻道</button>
+    <button class="tab" onclick="vidTab('variety',this)">綜藝 · 活動</button>
+  </div>
+  <div style="padding:0 5vw;margin-bottom:12px;display:flex;justify-content:flex-end;padding-top:20px;">
+    <button class="edit-btn hidden" id="vid-edit-btn" onclick="openModal('modal-vid')">✏ 編輯影片</button>
+  </div>
+  <div style="padding:0 5vw 60px;" id="vid-wrap"></div>
+  <footer><div class="ft-logo">JUHOON × CORTIS</div><div class="ft-r">COER</div></footer>
+</div>
+
+<!-- ═══ LIGHTBOX ═══ -->
+<div id="lb">
+  <button class="lb-x" onclick="lbClose()">✕ Close</button>
+  <div class="lb-in">
+    <img id="lb-img" src="" alt="">
+    <div id="lb-cap"></div>
+    <div class="lb-row">
+      <button class="lb-btn" onclick="lbMove(-1)">← Prev</button>
+      <span class="lb-cnt" id="lb-cnt"></span>
+      <button class="lb-btn" onclick="lbMove(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LOGIN MODAL ═══ -->
+<div id="login-modal" class="modal">
+  <div class="mbox">
+    <div class="mhead"><h3>Admin Login</h3><button class="mclose" onclick="closeModal('login-modal')">✕</button></div>
+    <div class="mbody" style="padding:22px;gap:10px;display:flex;flex-direction:column;">
+      <input type="password" id="pw" placeholder="輸入密碼" onkeydown="if(event.key==='Enter')doLogin()" style="border:1px solid #e0dfd8;padding:11px 13px;font-size:14px;outline:none;">
+      <div class="login-err" id="login-err">密碼錯誤，請再試一次。</div>
+      <div class="login-row">
+        <button class="btn-ok" onclick="doLogin()">登入</button>
+        <button class="btn-cancel" onclick="closeModal('login-modal')">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EDIT MODAL: IG ═══ -->
+<div id="modal-ig" class="modal">
+  <div class="mbox">
+    <div class="mhead"><h3>編輯 Instagram 貼文</h3><button class="mclose" onclick="closeModal('modal-ig')">✕</button></div>
+    <div class="mbody" id="body-ig"></div>
+    <button class="madd" onclick="addItem('ig')">＋ 新增貼文</button>
+    <button class="msave" onclick="saveAndClose('modal-ig','ig')">儲存並更新</button>
+  </div>
+</div>
+
+<!-- ═══ EDIT MODAL: WVS ═══ -->
+<div id="modal-wvs" class="modal">
+  <div class="mbox">
+    <div class="mhead"><h3>編輯 Weverse 照片</h3><button class="mclose" onclick="closeModal('modal-wvs')">✕</button></div>
+    <div class="mbody" id="body-wvs"></div>
+    <button class="madd" onclick="addItem('wvs')">＋ 新增照片</button>
+    <button class="msave" onclick="saveAndClose('modal-wvs','wvs')">儲存並更新</button>
+  </div>
+</div>
+
+<!-- ═══ EDIT MODAL: VID ═══ -->
+<div id="modal-vid" class="modal">
+  <div class="mbox">
+    <div class="mhead"><h3>編輯影片</h3><button class="mclose" onclick="closeModal('modal-vid')">✕</button></div>
+    <div class="mbody" id="body-vid"></div>
+    <button class="madd" onclick="addItem('vid')">＋ 新增影片</button>
+    <button class="msave" onclick="saveAndClose('modal-vid','vid')">儲存並更新</button>
+  </div>
+</div>
+
+<script>
+/* ───── DATA ───── */
+var ADMIN_PW = 'juhoon0103';
+var isAdmin = false;
+var curVidTab = 'fancam';
+
+var igData = [
+  {m:"2025.08",date:"2025.08.07",title:"@cortis — CORTIS 名稱首次公開",url:"https://picsum.photos/seed/ig01/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.08",date:"2025.08.11",title:"@cortis — 先行曲《GO!》MV 公開",url:"https://picsum.photos/seed/ig02/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.08",date:"2025.08.18",title:"@cortis — 出道日《What You Want》",url:"https://picsum.photos/seed/ig03/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.08",date:"2025.08.20",title:"@cortis — What You Want MV 公開",url:"https://picsum.photos/seed/ig04/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.08",date:"2025.08.24",title:"@cortis — IG Update（Juhoon）",url:"https://picsum.photos/seed/ig05/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.09",date:"2025.09.08",title:"@cortis — EP 發售《COLOR OUTSIDE THE LINES》",url:"https://picsum.photos/seed/ig06/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.09",date:"2025.09.09",title:"@cortis — FaSHioN Concept Performance Film",url:"https://picsum.photos/seed/ig07/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.09",date:"2025.09.21",title:"@cortis — JoyRide MV 公開",url:"https://picsum.photos/seed/ig08/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.10",date:"2025.10.25",title:"@cortis — W Korea 2025年10月號（品牌合作）",url:"https://picsum.photos/seed/ig09/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.12",date:"2025.12.01",title:"@cortis — IG Update（Juhoon）",url:"https://picsum.photos/seed/ig10/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.12",date:"2025.12.05",title:"@cortis — IG Update（Juhoon）",url:"https://picsum.photos/seed/ig11/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.12",date:"2025.12.11",title:"@cortis — IG Update（Juhoon）",url:"https://picsum.photos/seed/ig12/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.12",date:"2025.12.14",title:"@cortis — KBS Music Bank Global Festival in Japan",url:"https://picsum.photos/seed/ig13/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.12",date:"2025.12.18",title:"@cortis — IG Update（Juhoon）",url:"https://picsum.photos/seed/ig14/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.12",date:"2025.12.20",title:"@cortis — IG Update（Juhoon）",url:"https://picsum.photos/seed/ig15/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.12",date:"2025.12.24",title:"@cortis — 聖誕節前夕 IG Update（Juhoon）",url:"https://picsum.photos/seed/ig16/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2025.12",date:"2025.12.31",title:"@cortis — 2025 MBC 가요대제전",url:"https://picsum.photos/seed/ig17/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2026",date:"2026.01",title:"@cortis — 第40屆金唱片獎新人獎",url:"https://picsum.photos/seed/ig18/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2026",date:"2026 SG",title:"@cortis — 2026 Season's Greetings《Unexpected Encounter》",url:"https://picsum.photos/seed/ig19/600/800",link:"https://www.instagram.com/cortis/"},
+  {m:"2026",date:"2026.03.06",title:"@cortis — 第2張 EP《GREENGREEN》公告",url:"https://picsum.photos/seed/ig20/600/800",link:"https://www.instagram.com/cortis/"}
+];
+
+var wvsData = [
+  {date:"2025.08",title:"Weverse — 出道前練習室拍攝",url:"https://picsum.photos/seed/wv01/600/800",link:"https://weverse.io/cortis"},
+  {date:"2025.09",title:"Weverse — EP 發售紀念貼文",url:"https://picsum.photos/seed/wv02/600/800",link:"https://weverse.io/cortis"},
+  {date:"2025.10",title:"Weverse Magazine — Juhoon 特輯",url:"https://picsum.photos/seed/wv03/600/800",link:"https://weverse.io/cortis"},
+  {date:"2025.11",title:"Weverse — 팬미팅 비하인드",url:"https://picsum.photos/seed/wv04/600/800",link:"https://weverse.io/cortis"},
+  {date:"2025.12",title:"Weverse — 聖誕節問候",url:"https://picsum.photos/seed/wv05/600/800",link:"https://weverse.io/cortis"},
+  {date:"2026.01",title:"Weverse — 新年問候 2026",url:"https://picsum.photos/seed/wv06/600/800",link:"https://weverse.io/cortis"}
+];
+
+/* thumbnail helper: YouTube official thumbnail OR custom URL */
+function getThumb(v) {
+  if (v.thumb) return v.thumb;
+  if (v.ytId) return 'https://img.youtube.com/vi/' + v.ytId + '/mqdefault.jpg';
+  return 'https://picsum.photos/seed/vd' + encodeURIComponent(v.title.slice(0,8)) + '/480/270';
+}
+
+var vidData = {
+  fancam:[
+    {title:"[직캠] What You Want — JUHOON",date:"2025.08.22",show:"Studio Choom",ytId:"OYR1SUbKLHE",thumb:"",note:"Studio Choom 공식 직캠"},
+    {title:"[보이스캠 4K] GO! — JUHOON",date:"2025.09.03",show:"VoiceCam360˚",ytId:"-3u_xoN1Knc",thumb:"",note:"4K 보이스 포커스 직캠"},
+    {title:"[직캠] GO! — JUHOON",date:"2025.08.23",show:"뮤직뱅크 Music Bank",ytId:"",thumb:"https://picsum.photos/seed/fc3/480/270",note:"KBS 뮤직뱅크 250823"},
+    {title:"[직캠] FaSHioN — JUHOON",date:"2025.09.13",show:"쇼! 음악중심 Music Core",ytId:"",thumb:"https://picsum.photos/seed/fc4/480/270",note:"MBC Music Core 250913"},
+    {title:"[직캠] FaSHioN — JUHOON",date:"2025.09.26",show:"뮤직뱅크 Music Bank",ytId:"",thumb:"https://picsum.photos/seed/fc5/480/270",note:"KBS 뮤직뱅크 250926"},
+    {title:"[직캠] FaSHioN — JUHOON",date:"2025.09.28",show:"쇼! 음악중심 Music Core",ytId:"",thumb:"https://picsum.photos/seed/fc6/480/270",note:"MBC Music Core 250928"},
+    {title:"[직캠] Jingle Bell Rock — JUHOON",date:"2025.12.25",show:"SBS 가요대전",ytId:"UlgZ_WE12Ro",thumb:"",note:"2025 SBS 가요대전"}
+  ],
+  official:[
+    {title:"CORTIS 'GO!' Conceptual Performance Film",date:"2025.08.11",ytId:"",thumb:"https://picsum.photos/seed/of1/480/270",note:"CORTIS 공식 유튜브"},
+    {title:"CORTIS 'What You Want' Official MV",date:"2025.08.20",ytId:"",thumb:"https://picsum.photos/seed/of2/480/270",note:"CORTIS 공식 유튜브"},
+    {title:"What We Want 다큐멘터리 EP.1",date:"2025.09.01",ytId:"",thumb:"https://picsum.photos/seed/of3/480/270",note:"데뷔 다큐 1화"},
+    {title:"What We Want 다큐멘터리 EP.2",date:"2025.09.01",ytId:"",thumb:"https://picsum.photos/seed/of4/480/270",note:"데뷔 다큐 2화"},
+    {title:"What We Want 다큐멘터리 EP.3",date:"2025.09.01",ytId:"",thumb:"https://picsum.photos/seed/of5/480/270",note:"데뷔 다큐 3화"},
+    {title:"What We Want 다큐멘터리 EP.4",date:"2025.09.01",ytId:"",thumb:"https://picsum.photos/seed/of6/480/270",note:"데뷔 다큐 4화"},
+    {title:"CORTIS 'FaSHioN' Official MV",date:"2025.09.09",ytId:"",thumb:"https://picsum.photos/seed/of7/480/270",note:"CORTIS 공식 유튜브"},
+    {title:"CORTIS 'JoyRide' Official MV",date:"2025.09.21",ytId:"",thumb:"https://picsum.photos/seed/of8/480/270",note:"CORTIS 공식 유튜브"}
+  ],
+  variety:[
+    {title:"Inkigayo 스페셜 MC 출연（Juhoon & Keonho）",date:"2025",show:"SBS 인기가요",ytId:"",thumb:"https://picsum.photos/seed/va1/480/270",note:"Juhoon & Keonho 스페셜 MC"},
+    {title:"The Zach Sang Show 인터뷰",date:"2025",show:"Zach Sang Show",ytId:"",thumb:"https://picsum.photos/seed/va2/480/270",note:"미국 라디오 출연"},
+    {title:"KBS 뮤직뱅크 글로벌 페스티벌 in Japan",date:"2025.12.14",show:"KBS2",ytId:"",thumb:"https://picsum.photos/seed/va3/480/270",note:"도쿄 국립경기장 — What You Want + BTS Mic Drop 커버"},
+    {title:"2025 MBC 가요대제전",date:"2025.12.31",show:"MBC",ytId:"",thumb:"https://picsum.photos/seed/va4/480/270",note:"연말 가요제"},
+    {title:"2025 SBS 가요대전",date:"2025.12.25",show:"SBS",ytId:"",thumb:"https://picsum.photos/seed/va5/480/270",note:"Jingle Bell Rock 무대"}
+  ]
+};
+
+/* ───── PAGE ROUTING ───── */
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+  closeDrawer();
+}
+
+/* ───── DRAWER ───── */
+function toggleDrawer() {
+  var d = document.getElementById('drawer');
+  var h = document.getElementById('ham');
+  var o = document.getElementById('overlay');
+  var open = d.classList.contains('open');
+  if (open) { d.classList.remove('open'); h.classList.remove('open'); o.classList.remove('open'); }
+  else { d.classList.add('open'); h.classList.add('open'); o.classList.add('open'); }
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+/* ───── ADMIN ───── */
+function updateAdminUI() {
+  var status = document.getElementById('admin-status');
+  var btn = document.getElementById('admin-btn');
+  var show = isAdmin ? '' : 'hidden';
+  ['ig-edit-btn','wvs-edit-btn','vid-edit-btn'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) { if (isAdmin) el.classList.remove('hidden'); else el.classList.add('hidden'); }
+  });
+  if (isAdmin) { status.textContent = '已登入管理員'; btn.textContent = '登出'; }
+  else { status.textContent = ''; btn.textContent = 'Admin Login'; }
+}
+function handleAdmin() {
+  if (isAdmin) { isAdmin = false; updateAdminUI(); closeDrawer(); }
+  else { closeDrawer(); openModal('login-modal'); setTimeout(function(){ document.getElementById('pw').focus(); }, 120); }
+}
+function doLogin() {
+  if (document.getElementById('pw').value === ADMIN_PW) {
+    isAdmin = true; updateAdminUI(); closeModal('login-modal');
+  } else {
+    document.getElementById('login-err').classList.add('show');
+    document.getElementById('pw').value = '';
+  }
+}
+
+/* ───── MODAL ───── */
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (id === 'modal-ig') renderEditBody('ig');
+  if (id === 'modal-wvs') renderEditBody('wvs');
+  if (id === 'modal-vid') renderEditBody('vid');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+['login-modal','modal-ig','modal-wvs','modal-vid'].forEach(function(id){
+  document.getElementById(id).addEventListener('click', function(e){ if (e.target === this) closeModal(id); });
+});
+
+/* ───── LIGHTBOX ───── */
+var lbList = [], lbIdx = 0;
+function lbOpen(list, i) { lbList = list; lbIdx = i; lbRefresh(); document.getElementById('lb').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function lbClose() { document.getElementById('lb').classList.remove('open'); document.body.style.overflow = ''; }
+function lbMove(d) { lbIdx = (lbIdx + d + lbList.length) % lbList.length; lbRefresh(); }
+function lbRefresh() {
+  var p = lbList[lbIdx];
+  document.getElementById('lb-img').src = p.url || p.thumb || '';
+  document.getElementById('lb-cap').textContent = (p.date || '') + (p.title ? ' — ' + p.title : '');
+  document.getElementById('lb-cnt').textContent = (lbIdx + 1) + ' / ' + lbList.length;
+}
+document.getElementById('lb').addEventListener('click', function(e){ if (e.target === this) lbClose(); });
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') { lbClose(); }
+  if (e.key === 'ArrowLeft') lbMove(-1);
+  if (e.key === 'ArrowRight') lbMove(1);
+});
+
+/* ───── PHOTO RENDER ───── */
+var curFilter = 'all';
+function phFilter(m, btn) {
+  curFilter = m;
+  document.querySelectorAll('#ig-tabs .tab').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  renderIg();
+}
+function makePhHTML(list, listName) {
+  var h = '';
+  for (var i = 0; i < list.length; i++) {
+    var p = list[i];
+    h += '<div class="pc" onclick="lbOpen(' + listName + ',' + i + ')">'
+      + '<img src="' + esc(p.url) + '" alt="" loading="lazy" onerror="this.src=\'https://picsum.photos/seed/err' + i + '/600/800\'">'
+      + '<div class="pc-cap"><div class="pc-date">' + esc(p.date) + '</div><div class="pc-title">' + esc(p.title) + '</div></div>'
+      + '<div class="pc-badge">↗</div></div>';
+  }
+  return h;
+}
+function renderIg() {
+  var list = curFilter === 'all' ? igData : igData.filter(function(p){ return p.m === curFilter; });
+  window._igFiltered = list;
+  document.getElementById('ph-grid').innerHTML = makePhHTML(list, 'window._igFiltered');
+}
+function renderWvs() {
+  document.getElementById('wvs-grid').innerHTML = makePhHTML(wvsData, 'wvsData');
+}
+
+/* ───── VIDEO RENDER ───── */
+function vidTab(t, btn) {
+  curVidTab = t;
+  document.querySelectorAll('#vid-tabs .tab').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  renderVid(t);
+}
+function renderVid(t) {
+  var vids = vidData[t], h = '';
+  if (t === 'variety') {
+    for (var i = 0; i < vids.length; i++) {
+      var v = vids[i];
+      var href = v.ytId ? 'https://youtu.be/' + v.ytId : (v.link || '');
+      h += '<div class="vli">'
+        + '<div class="vli-n">' + String(i+1).padStart(2,'0') + '</div>'
+        + '<div class="vt" style="width:120px;min-width:120px;aspect-ratio:16/9;cursor:pointer;" onclick="lbOpen(vidData[\'' + t + '\'],' + i + ')">'
+        + '<img src="' + esc(getThumb(v)) + '" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.src=\'https://picsum.photos/seed/vde' + i + '/480/270\'">'
+        + '</div>'
+        + '<div class="vli-b"><div class="vli-title">' + esc(v.title) + '</div>'
+        + '<div class="vli-m">' + esc(v.date) + (v.show ? ' · ' + esc(v.show) : '') + '</div>'
+        + (v.note ? '<div class="vli-note">' + esc(v.note) + '</div>' : '') + '</div>'
+        + (href ? '<a class="watch" href="' + href + '" target="_blank" rel="noreferrer">Watch ↗</a>' : '')
+        + '</div>';
+    }
+  } else {
+    h = '<div class="vid-grid">';
+    for (var i = 0; i < vids.length; i++) {
+      var v = vids[i];
+      var href = v.ytId ? 'https://youtu.be/' + v.ytId : (v.link || '');
+      var tag = href ? 'a href="' + href + '" target="_blank" rel="noreferrer"' : 'div';
+      var endTag = href ? 'a' : 'div';
+      h += '<' + tag + ' class="vc' + (href ? '' : ' dim') + '">'
+        + '<div class="vt" onclick="lbOpen(vidData[\'' + t + '\'],' + i + ');event.preventDefault();">'
+        + '<img src="' + esc(getThumb(v)) + '" alt="" loading="lazy" onerror="this.src=\'https://picsum.photos/seed/vde' + i + '/480/270\'">'
+        + '<div class="vplay"><div class="vplay-btn"><div class="vtri"></div></div></div></div>'
+        + '<div class="vi"><div class="vi-meta">' + esc(v.date) + (v.show ? ' · ' + esc(v.show) : '') + '</div>'
+        + '<div class="vi-name">' + esc(v.title) + '</div>'
+        + (v.note ? '<div class="vi-note">' + esc(v.note) + '</div>' : '')
+        + '</div></' + endTag + '>';
+    }
+    h += '</div>';
+  }
+  document.getElementById('vid-wrap').innerHTML = h;
+}
+
+/* ───── EDIT PANELS ───── */
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function renderEditBody(type) {
+  var data, bodyId, fields;
+  if (type === 'ig') {
+    data = igData; bodyId = 'body-ig';
+    fields = [
+      {k:'m',    ph:'月份分類 (如 2025.08)'},
+      {k:'date', ph:'日期 (如 2025.08.18)'},
+      {k:'title',ph:'貼文標題'},
+      {k:'url',  ph:'圖片網址 https://...'},
+      {k:'link', ph:'IG 貼文連結 https://instagram.com/p/...'}
+    ];
+  } else if (type === 'wvs') {
+    data = wvsData; bodyId = 'body-wvs';
+    fields = [
+      {k:'date', ph:'日期 (如 2025.10)'},
+      {k:'title',ph:'說明文字'},
+      {k:'url',  ph:'圖片網址 https://...'},
+      {k:'link', ph:'Weverse 連結 https://weverse.io/...'}
+    ];
+  } else {
+    data = vidData[curVidTab]; bodyId = 'body-vid';
+    fields = [
+      {k:'title',ph:'影片標題'},
+      {k:'date', ph:'日期 (如 2025.08.22)'},
+      {k:'show', ph:'節目/頻道名稱'},
+      {k:'ytId', ph:'YouTube ID (如 OYR1SUbKLHE)'},
+      {k:'thumb',ph:'封面圖網址（無 YT ID 時使用）https://...'},
+      {k:'note', ph:'備註說明'},
+      {k:'link', ph:'直播/其他連結（非 YouTube）'}
+    ];
+  }
+  var h = '';
+  for (var i = 0; i < data.length; i++) {
+    h += '<div class="ei"><div class="ei-label">#' + (i+1) + '</div>';
+    for (var j = 0; j < fields.length; j++) {
+      var f = fields[j];
+      h += '<input placeholder="' + f.ph + '" value="' + esc(data[i][f.k]||'') + '" '
+         + 'onchange="updItem(\'' + type + '\',' + i + ',\'' + f.k + '\',this.value)">';
+    }
+    h += '<button class="ei-del" onclick="delItem(\'' + type + '\',' + i + ')">刪除</button></div>';
+  }
+  document.getElementById(bodyId).innerHTML = h;
+}
+function updItem(type, i, k, v) {
+  var data = type === 'ig' ? igData : type === 'wvs' ? wvsData : vidData[curVidTab];
+  data[i][k] = v;
+}
+function delItem(type, i) {
+  var data = type === 'ig' ? igData : type === 'wvs' ? wvsData : vidData[curVidTab];
+  data.splice(i, 1);
+  renderEditBody(type);
+}
+function addItem(type) {
+  if (type === 'ig') igData.push({m:'2025.08',date:'',title:'',url:'',link:'https://www.instagram.com/cortis/'});
+  else if (type === 'wvs') wvsData.push({date:'',title:'',url:'',link:'https://weverse.io/cortis'});
+  else vidData[curVidTab].push({title:'',date:'',show:'',ytId:'',thumb:'',note:'',link:''});
+  renderEditBody(type);
+  setTimeout(function(){
+    var bodyId = type==='ig'?'body-ig':type==='wvs'?'body-wvs':'body-vid';
+    var body = document.getElementById(bodyId);
+    if (body.lastElementChild) body.lastElementChild.scrollIntoView({behavior:'smooth'});
+  }, 60);
+}
+function saveAndClose(modalId, type) {
+  closeModal(modalId);
+  if (type === 'ig') renderIg();
+  else if (type === 'wvs') renderWvs();
+  else renderVid(curVidTab);
+}
+
+/* ───── INIT ───── */
+updateAdminUI();
+renderIg();
+renderWvs();
+renderVid('fancam');
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
